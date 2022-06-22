@@ -28,4 +28,9 @@ $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers\Api\PaymentMethod'], function ($api) {
         $api->resource('payment-methods', 'PaymentMethodV1Controller');
     });
+
+    // STATUS
+    $api->group(['namespace' => 'App\Http\Controllers\Api\Status'], function ($api) {
+        $api->resource('statuses', 'StatusV1Controller');
+    });
 });
