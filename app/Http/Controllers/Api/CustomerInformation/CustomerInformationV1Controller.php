@@ -36,7 +36,7 @@ class CustomerInformationV1Controller extends Controller
             'receive_promotion' => 0,
         ]);
 
-        return $this->response->item($customer_information, new CustomerInformationTransformer());
+        return $this->response->created();
     }
 
     public function update(Request $request, $id)

@@ -35,7 +35,7 @@ class StatusV1Controller extends Controller
             'type' => $request->type,
         ]);
 
-        return $this->response->item($status, new StatusTransformer());
+        return $this->response->created();
     }
 
     public function update(Request $request, $id)

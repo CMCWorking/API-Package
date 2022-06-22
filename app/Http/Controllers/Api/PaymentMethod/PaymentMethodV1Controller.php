@@ -32,7 +32,7 @@ class PaymentMethodV1Controller extends Controller
             'description' => $request->description,
         ]);
 
-        return $this->response->item($payment_method, new PaymentMethodTransformer());
+        return $this->response->created();
     }
 
     public function update(Request $request, $id)

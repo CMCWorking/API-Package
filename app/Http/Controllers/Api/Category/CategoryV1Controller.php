@@ -39,7 +39,7 @@ class CategoryV1Controller extends Controller
             'keywords' => $request->keywords,
         ]);
 
-        return $this->response->item($category, new CategoryTransformer());
+        return $this->response->created();
     }
 
     public function update(Request $request, $id)
