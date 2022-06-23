@@ -16,7 +16,6 @@ $api = app('Dingo\Api\Routing\Router');
 // AUTHENTICATION
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\Auth', 'as' => 'auth'], function ($api) {
     $api->post('/login', ['as' => 'login', 'uses' => 'AuthV1Controller@login']);
-    $api->post('/register', ['as' => 'register', 'uses' => 'AuthV1Controller@register']);
     $api->post('/logout', ['as' => 'logout', 'uses' => 'AuthV1Controller@logout']);
 });
 
