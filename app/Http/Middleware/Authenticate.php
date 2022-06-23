@@ -17,7 +17,7 @@ class Authenticate extends Middleware
     {
         if (!$request->expectsJson()) {
             // return route('login');
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedHttpException('You are not authorized to access this resource.');
         }
     }
 }
