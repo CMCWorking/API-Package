@@ -31,4 +31,14 @@ class AuthV1Controller extends Controller
             'access_token' => $token,
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        $user = Auth::guard('sanctum')->user();
+        $user->currentAccessToken()->delete();
+
+        return $this->response->array([
+            'message' => 'Logout successful',
+        ]);
+    }
 }
