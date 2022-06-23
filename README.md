@@ -12,4 +12,9 @@ docker-compose exec app php artisan db:seed
 
 # API testing
 
-Please use Postman and follow [this URL](https://documenter.getpostman.com/view/21583062/UzBpK64J) to test .
+Please use Postman and follow [this URL](https://documenter.getpostman.com/view/21583062/UzBpK64J) to test.
+
+# TESTING account
+- Email: `admin@email.com`
+- Password: `123123123`
+
