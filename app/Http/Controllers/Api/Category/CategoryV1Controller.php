@@ -6,12 +6,18 @@ use App\Http\Controllers\Api\Category\CategoryTransformer;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Dingo\Api\Routing\Helpers;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class CategoryV1Controller extends Controller
 {
     use Helpers;
+
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
 
     public function index()
     {
@@ -29,17 +35,21 @@ class CategoryV1Controller extends Controller
 
     public function store(Request $request)
     {
-        $category = Category::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name),
-            'description' => $request->description,
-            'image' => $request->image,
-            'parent_id' => $request->parent_id,
-            'status' => $request->status,
-            'keywords' => $request->keywords,
-        ]);
+        try {
+            $category = Category::create([
+                'name' => $request->name,
+                'slug' => Str::slug($request->name),
+                'description' => $request->description,
+                'image' => $request->image,
+                'parent_id' => $request->parent_id,
+                'status' => $request->status,
+                'keywords' => $request->keywords,
+            ]);
 
-        return $this->response->created();
+            return $this->response->item($category, new CategoryTransformer());
+        } catch (Exception $ex) {
+            return $this->response->error($ex->getMessage(), 500);
+        }
     }
 
     public function update(Request $request, $id)
