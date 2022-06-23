@@ -13,7 +13,19 @@
 
 $api = app('Dingo\Api\Routing\Router');
 
-$api->version('v1', function ($api) {
+// AUTHENTICATION
+$api->version('v1', ['namespace' => 'App\Http\Controllers\Api\Auth', 'as' => 'auth'], function ($api) {
+    $api->post('/login', ['as' => 'login', 'uses' => 'AuthV1Controller@login']);
+    $api->post('/register', ['as' => 'register', 'uses' => 'AuthV1Controller@register']);
+    $api->post('/logout', ['as' => 'logout', 'uses' => 'AuthV1Controller@logout']);
+});
+
+$api->version('v1', ['middleware' => 'auth:sanctum'], function ($api) {
+    // USERS
+    $api->group(['namespace' => 'App\Http\Controllers\Api\User'], function ($api) {
+        $api->resource('users', 'UserV1Controller');
+    });
+
     // CATEGORIES
     $api->group(['namespace' => 'App\Http\Controllers\Api\Category'], function ($api) {
         $api->resource('categories', 'CategoryV1Controller');
