@@ -10,6 +10,10 @@ use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+/**
+ * Category resource representation
+ * @Resource("Categories", uri="/categories")
+ */
 class CategoryV1Controller extends Controller
 {
     use Helpers;
@@ -20,6 +24,11 @@ class CategoryV1Controller extends Controller
         $this->category = $category;
     }
 
+    /**
+     * It returns a paginated list of categories, using the `CategoryTransformer` to transform the data
+     *
+     * @return A paginated list of categories.
+     */
     public function index()
     {
         $categories = $this->category->paginate(10);
@@ -27,13 +36,28 @@ class CategoryV1Controller extends Controller
         return $this->response->paginator($categories, new CategoryTransformer());
     }
 
+    /**
+     * It returns a single category
+     *
+     * @param id The ID of the category to show
+     *
+     * @return A single category
+     */
     public function show($id)
     {
         $category = $this->category->find($id);
+        if (!$category) {
+            return $this->response->errorNotFound('Category not found');
+        }
 
         return $this->response->item($category, new CategoryTransformer());
     }
 
+    /**
+     * It creates a new category and returns a success message
+     *
+     * @param CategoryAPIRequest request The request object.
+     */
     public function store(CategoryAPIRequest $request)
     {
         $category = $this->category->create([
@@ -51,6 +75,14 @@ class CategoryV1Controller extends Controller
         ]);
     }
 
+    /**
+     * It updates the category with the given id
+     *
+     * @param Request request The request object.
+     * @param id The id of the category to be updated.
+     *
+     * @return An array with a message.
+     */
     public function update(Request $request, $id)
     {
         $category = $this->category->find($id);
@@ -74,6 +106,13 @@ class CategoryV1Controller extends Controller
         ]);
     }
 
+    /**
+     * It deletes a category by its ID
+     *
+     * @param id The ID of the category to be deleted.
+     *
+     * @return A JSON response with a message.
+     */
     public function destroy($id)
     {
         $category = $this->category->find($id);
