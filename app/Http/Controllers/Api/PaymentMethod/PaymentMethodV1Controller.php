@@ -11,6 +11,11 @@ class PaymentMethodV1Controller extends Controller
 {
     use Helpers;
 
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     public function index()
     {
         $payment_methods = PaymentMethod::paginate(10);
