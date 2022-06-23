@@ -7,7 +7,6 @@ use App\Models\User;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthV1Controller extends Controller
 {
@@ -30,28 +29,6 @@ class AuthV1Controller extends Controller
         return $this->response->array([
             'token_type' => 'Bearer',
             'access_token' => $token,
-        ]);
-    }
-
-    public function register(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
-
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => Hash::make($validatedData['password']),
-        ]);
-
-        $token = $user->createToken('auth_api')->plainTextToken;
-
-        return $this->response->array([
-            'token' => $token,
-            'user' => $user,
         ]);
     }
 }
