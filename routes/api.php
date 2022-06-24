@@ -44,4 +44,9 @@ $api->version('v1', ['middleware' => 'auth:sanctum'], function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers\Api\Status'], function ($api) {
         $api->resource('statuses', 'StatusV1Controller');
     });
+
+    // ROLE
+    $api->group(['namespace' => 'App\Http\Controllers\Api\Role'], function ($api) {
+        $api->resource('roles', 'RoleV1Controller');
+    });
 });
