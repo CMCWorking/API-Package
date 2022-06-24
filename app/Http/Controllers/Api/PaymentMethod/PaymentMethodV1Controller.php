@@ -28,6 +28,10 @@ class PaymentMethodV1Controller extends Controller
     {
         $payment_method = $this->payment_method->find($id);
 
+        if (!$payment_method) {
+            return $this->response->errorNotFound('Payment Method not found');
+        }
+
         return $this->response->item($payment_method, new PaymentMethodTransformer());
     }
 
@@ -38,9 +42,7 @@ class PaymentMethodV1Controller extends Controller
             'description' => $request->description,
         ]);
 
-        return $this->response->array([
-            'message' => 'Payment Method created successfully.',
-        ]);
+        return $this->response->item($payment_method, new PaymentMethodTransformer());
     }
 
     public function update(PaymentMethodAPIRequest $request, $id)

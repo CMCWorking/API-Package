@@ -39,9 +39,7 @@ class UserV1Controller extends Controller
             'password' => $request->password,
         ]);
 
-        return $this->response->array([
-            'message' => 'User created successfully',
-        ]);
+        return $this->response->item($user, new UserTransformer());
     }
 
     public function update(UserAPIRequest $request, $id)

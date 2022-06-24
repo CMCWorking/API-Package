@@ -70,9 +70,7 @@ class CategoryV1Controller extends Controller
             'keywords' => $request->keywords,
         ]);
 
-        return $this->response->array([
-            'message' => 'Category created successfully',
-        ]);
+        return $this->response->item($category, new CategoryTransformer());
     }
 
     /**
