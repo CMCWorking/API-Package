@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentMethodAPIRequest;
 use App\Models\PaymentMethod;
 use Dingo\Api\Routing\Helpers;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class PaymentMethodV1Controller extends Controller
 {
@@ -38,7 +39,7 @@ class PaymentMethodV1Controller extends Controller
     public function store(PaymentMethodAPIRequest $request)
     {
         if (!auth()->user()->can('create-payment-methods')) {
-            return $this->response->errorForbidden('You are not allowed to create payment methods.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to create payment methods.');
         }
 
         $payment_method = $this->payment_method->create([
@@ -58,7 +59,7 @@ class PaymentMethodV1Controller extends Controller
         }
 
         if (!auth()->user()->can('update-payment-methods')) {
-            return $this->response->errorForbidden('You are not allowed to update payment methods.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to update payment methods.');
         }
 
         $payment_method->update([
@@ -80,7 +81,7 @@ class PaymentMethodV1Controller extends Controller
         }
 
         if (!auth()->user()->can('delete-payment-methods')) {
-            return $this->response->errorForbidden('You are not allowed to delete payment methods.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to delete payment methods.');
         }
 
         $payment_method->delete();

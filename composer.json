@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "barryvdh/laravel-ide-helper": "^2.12",
         "buihuycuong/vnfaker": "dev-master",
         "dingo/api": "^3.0.0",
         "fruitcake/laravel-cors": "^2.0",
