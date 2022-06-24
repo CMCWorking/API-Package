@@ -33,6 +33,10 @@ class StatusV1Controller extends Controller
 
     public function store(Request $request)
     {
+        if (!auth()->user()->can('create-statuses')) {
+            return $this->response->errorForbidden('You are not allowed to create statuses.');
+        }
+
         $status = Status::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -47,6 +51,14 @@ class StatusV1Controller extends Controller
     {
         $status = Status::find($id);
 
+        if (!$status) {
+            return $this->response->errorNotFound('Status not found');
+        }
+
+        if (!auth()->user()->can('update-statuses')) {
+            return $this->response->errorForbidden('You are not allowed to update statuses.');
+        }
+
         $status->update([
             'name' => $request->name,
             'description' => $request->description,
@@ -60,6 +72,14 @@ class StatusV1Controller extends Controller
     public function destroy($id)
     {
         $status = Status::find($id);
+
+        if (!$status) {
+            return $this->response->errorNotFound('Status not found');
+        }
+
+        if (!auth()->user()->can('delete-statuses')) {
+            return $this->response->errorForbidden('You are not allowed to delete statuses.');
+        }
 
         $status->delete();
 
