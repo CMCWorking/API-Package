@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\CustomerInformations;
+use App\Models\CustomerInformation;
 use Buihuycuong\Vnfaker\VNFaker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +23,7 @@ class CustomerInformationSeeder extends Seeder
         $engine = ['facebook', 'google', 'email'];
 
         for ($i = 0; $i <= 20; $i++) {
-            CustomerInformations::create([
+            CustomerInformation::create([
                 'name' => VNFaker::fullname(),
                 'email' => VNFaker::email(['gmail.test', 'cmcglobal.test']),
                 'phone' => VNFaker::mobilephone(),
