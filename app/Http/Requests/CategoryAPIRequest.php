@@ -13,7 +13,7 @@ class CategoryAPIRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,11 +24,11 @@ class CategoryAPIRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required|string'],
-            'image' => ['required|string'],
-            'status' => ['required|integer'],
-            'slug' => ['unique:categories'],
-            'parent_id' => ['integer'],
+            'name' => 'required|string',
+            'image' => 'required|string',
+            'status' => 'required|integer',
+            'slug' => 'unique:categories',
+            'parent_id' => 'integer',
         ];
     }
 
