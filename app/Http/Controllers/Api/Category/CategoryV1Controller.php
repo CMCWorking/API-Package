@@ -9,6 +9,7 @@ use App\Models\Category;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Category resource representation
@@ -61,7 +62,7 @@ class CategoryV1Controller extends Controller
     public function store(CategoryAPIRequest $request)
     {
         if (!auth()->user()->can('create-categories')) {
-            return $this->response->errorForbidden('You are not allowed to create categories.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to create categories.');
         }
 
         $category = $this->category->create([
@@ -94,7 +95,7 @@ class CategoryV1Controller extends Controller
         }
 
         if (!auth()->user()->can('update-categories')) {
-            return $this->response->errorForbidden('You are not allowed to update categories.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to update categories.');
         }
 
         $category->update([
@@ -128,7 +129,7 @@ class CategoryV1Controller extends Controller
         }
 
         if (!auth()->user()->can('delete-categories')) {
-            return $this->response->errorForbidden('You are not allowed to delete categories.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to delete categories.');
         }
 
         $category->delete();

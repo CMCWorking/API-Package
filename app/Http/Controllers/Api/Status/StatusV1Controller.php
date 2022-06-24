@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Status;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class StatusV1Controller extends Controller
 {
@@ -34,7 +35,7 @@ class StatusV1Controller extends Controller
     public function store(Request $request)
     {
         if (!auth()->user()->can('create-statuses')) {
-            return $this->response->errorForbidden('You are not allowed to create statuses.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to create statuses.');
         }
 
         $status = Status::create([
@@ -56,7 +57,7 @@ class StatusV1Controller extends Controller
         }
 
         if (!auth()->user()->can('update-statuses')) {
-            return $this->response->errorForbidden('You are not allowed to update statuses.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to update statuses.');
         }
 
         $status->update([
@@ -78,7 +79,7 @@ class StatusV1Controller extends Controller
         }
 
         if (!auth()->user()->can('delete-statuses')) {
-            return $this->response->errorForbidden('You are not allowed to delete statuses.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to delete statuses.');
         }
 
         $status->delete();

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserAPIRequest;
 use App\Models\User;
 use Dingo\Api\Routing\Helpers;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class UserV1Controller extends Controller
 {
@@ -34,7 +35,7 @@ class UserV1Controller extends Controller
     public function store(UserAPIRequest $request)
     {
         if (!auth()->user()->can('create-users')) {
-            return $this->response->errorForbidden('You are not allowed to create users.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to create users.');
         }
 
         $user = $this->user->create([
@@ -49,7 +50,7 @@ class UserV1Controller extends Controller
     public function update(UserAPIRequest $request, $id)
     {
         if (!auth()->user()->can('update-users')) {
-            return $this->response->errorForbidden('You are not allowed to update users.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to update users.');
         }
 
         $user = $this->user->find($id);
@@ -71,7 +72,7 @@ class UserV1Controller extends Controller
     public function destroy($id)
     {
         if (!auth()->user()->can('delete-users')) {
-            return $this->response->errorForbidden('You are not allowed to delete users.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to delete users.');
         }
 
         $user = $this->user->find($id);

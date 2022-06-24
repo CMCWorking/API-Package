@@ -7,6 +7,7 @@ use App\Http\Requests\CustomerInformationAPIRequest;
 use App\Models\CustomerInformation;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class CustomerInformationV1Controller extends Controller
 {
@@ -35,7 +36,7 @@ class CustomerInformationV1Controller extends Controller
     public function store(CustomerInformationAPIRequest $request)
     {
         if (!auth()->user()->can('create-customer-informations')) {
-            return $this->response->errorForbidden('You are not allowed to create customer informations.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to create customer informations.');
         }
 
         $customer_information = $this->customer_information->create([
@@ -58,7 +59,7 @@ class CustomerInformationV1Controller extends Controller
         }
 
         if (!auth()->user()->can('update-customer-informations')) {
-            return $this->response->errorForbidden('You are not allowed to update customer informations.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to update customer informations.');
         }
 
         $customer_information->update([
@@ -83,7 +84,7 @@ class CustomerInformationV1Controller extends Controller
         }
 
         if (!auth()->user()->can('delete-customer-informations')) {
-            return $this->response->errorForbidden('You are not allowed to delete customer informations.');
+            return $this->response->AccessDeniedHttpException('You are not allowed to delete customer informations.');
         }
 
         $customer_information->delete();
