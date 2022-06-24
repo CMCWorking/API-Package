@@ -4,73 +4,47 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Api\User\UserTransformer;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserAPIRequest;
 use App\Models\User;
-use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Routing\Helpers;
-use Illuminate\Http\Request;
 
 class UserV1Controller extends Controller
 {
     use Helpers;
 
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     public function index()
     {
-        $user = User::paginate(10);
+        $user = $this->user->paginate(10);
 
         return $this->response->paginator($user, new UserTransformer());
     }
 
     public function show($id)
     {
-        $user = User::find($id);
+        $user = $this->user->find($id);
 
         return $this->response->item($user, new UserTransformer());
     }
 
-    public function store(Request $request)
+    public function store(UserAPIRequest $request)
     {
-        $rules = [
-            'name' => ['required', 'string'],
-            'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-        ];
-
-        $payload = app('request')->only(['name', 'email', 'password']);
-
-        $validator = app('validator')->make($payload, $rules);
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Could not create new user.', $validator->errors());
-        }
-
-        $user = User::create([
+        $user = $this->user->create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
         ]);
 
-        return $this->response->array([
-            'message' => 'User created successfully',
-        ]);
+        return $this->response->item($user, new UserTransformer());
     }
 
-    public function update(Request $request, $id)
+    public function update(UserAPIRequest $request, $id)
     {
-        $rules = [
-            'name' => ['string'],
-            'email' => ['email', 'unique:users'],
-            'password' => ['string', 'min:8'],
-        ];
-
-        $payload = app('request')->only(['name', 'email', 'password']);
-
-        $validator = app('validator')->make($payload, $rules);
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Could not update user.', $validator->errors());
-        }
-
-        $user = User::find($id);
+        $user = $this->user->find($id);
         if (!$user) {
             return $this->response->errorNotFound('User not found');
         }
@@ -88,7 +62,7 @@ class UserV1Controller extends Controller
 
     public function destroy($id)
     {
-        $user = User::find($id);
+        $user = $this->user->find($id);
         if (!$user) {
             return $this->response->errorNotFound('User not found');
         }

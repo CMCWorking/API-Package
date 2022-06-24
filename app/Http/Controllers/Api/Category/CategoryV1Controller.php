@@ -4,56 +4,63 @@ namespace App\Http\Controllers\Api\Category;
 
 use App\Http\Controllers\Api\Category\CategoryTransformer;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryAPIRequest;
 use App\Models\Category;
-use Dingo\Api\Exception\StoreResourceFailedException;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+/**
+ * Category resource representation
+ * @Resource("Categories", uri="/categories")
+ */
 class CategoryV1Controller extends Controller
 {
     use Helpers;
 
-    public function __construct()
+    public function __construct(Category $category)
     {
         $this->middleware('auth:sanctum');
+        $this->category = $category;
     }
 
+    /**
+     * It returns a paginated list of categories, using the `CategoryTransformer` to transform the data
+     *
+     * @return A paginated list of categories.
+     */
     public function index()
     {
-        $categories = Category::paginate(10);
+        $categories = $this->category->paginate(10);
 
         return $this->response->paginator($categories, new CategoryTransformer());
     }
 
+    /**
+     * It returns a single category
+     *
+     * @param id The ID of the category to show
+     *
+     * @return A single category
+     */
     public function show($id)
     {
-        $category = Category::find($id);
+        $category = $this->category->find($id);
+        if (!$category) {
+            return $this->response->errorNotFound('Category not found');
+        }
 
         return $this->response->item($category, new CategoryTransformer());
     }
 
-    public function store(Request $request)
+    /**
+     * It creates a new category and returns a success message
+     *
+     * @param CategoryAPIRequest request The request object.
+     */
+    public function store(CategoryAPIRequest $request)
     {
-        $rules = [
-            'name' => ['required', 'string'],
-            'image' => ['required', 'string'],
-            'status' => ['required', 'integer'],
-            'slug' => ['unique:categories'],
-            'parent_id' => ['nullable', 'integer'],
-            'keywords' => ['nullable', 'string'],
-            'description' => ['nullable', 'string'],
-        ];
-
-        $payload = app('request')->only(['name', 'slug', 'status', 'description', 'image', 'parent_id', 'keywords']);
-
-        $validator = app('validator')->make($payload, $rules);
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Could not create new Category.', $validator->errors());
-        }
-
-        $category = Category::create([
+        $category = $this->category->create([
             'name' => $request->name,
             'slug' => $request->slug ? $request->slug : Str::slug($request->name),
             'description' => $request->description,
@@ -63,32 +70,20 @@ class CategoryV1Controller extends Controller
             'keywords' => $request->keywords,
         ]);
 
-        return $this->response->array([
-            'message' => 'Category created successfully',
-        ]);
+        return $this->response->item($category, new CategoryTransformer());
     }
 
+    /**
+     * It updates the category with the given id
+     *
+     * @param Request request The request object.
+     * @param id The id of the category to be updated.
+     *
+     * @return An array with a message.
+     */
     public function update(Request $request, $id)
     {
-        $rules = [
-            'name' => ['required', 'string'],
-            'image' => ['string'],
-            'status' => ['required', 'integer'],
-            'slug' => ['unique:categories'],
-            'parent_id' => ['nullable', 'integer'],
-            'keywords' => ['nullable', 'string'],
-            'description' => ['nullable', 'string'],
-        ];
-
-        $payload = app('request')->only(['name', 'slug', 'status', 'description', 'image', 'parent_id', 'keywords']);
-
-        $validator = app('validator')->make($payload, $rules);
-
-        if ($validator->fails()) {
-            throw new StoreResourceFailedException('Could not update Category.', $validator->errors());
-        }
-
-        $category = Category::find($id);
+        $category = $this->category->find($id);
 
         if (!$category) {
             return $this->response->errorNotFound('Category not found');
@@ -109,9 +104,16 @@ class CategoryV1Controller extends Controller
         ]);
     }
 
+    /**
+     * It deletes a category by its ID
+     *
+     * @param id The ID of the category to be deleted.
+     *
+     * @return A JSON response with a message.
+     */
     public function destroy($id)
     {
-        $category = Category::find($id);
+        $category = $this->category->find($id);
 
         if (!$category) {
             return $this->response->errorNotFound('Category not found');

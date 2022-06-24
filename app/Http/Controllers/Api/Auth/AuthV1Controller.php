@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthAPIRequest;
 use App\Models\User;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
@@ -12,18 +13,13 @@ class AuthV1Controller extends Controller
 {
     use Helpers;
 
-    public function login(Request $request)
+    public function login(AuthAPIRequest $request)
     {
-        $validatedData = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if (!Auth::attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']])) {
+        if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return $this->response->errorUnauthorized();
         }
 
-        $user = User::where('email', $validatedData['email'])->firstOrFail();
+        $user = User::where('email', $request->email)->firstOrFail();
         $token = $user->createToken('app_API')->plainTextToken;
 
         return $this->response->array([

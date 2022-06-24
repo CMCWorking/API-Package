@@ -137,10 +137,12 @@ return [
      */
 
     'errorFormat' => [
-        'message' => ':message',
-        'errors' => ':errors',
         'code' => ':code',
-        'status_code' => ':status_code',
+        'message' => ':message',
+        'data' => [
+            'status' => ':status_code',
+            'errors' => ':errors',
+        ],
         'debug' => ':debug',
     ],
 
@@ -168,7 +170,7 @@ return [
      */
 
     'auth' => [
-        'jwt' => 'Dingo\Api\Auth\Provider\JWT',
+
     ],
 
     /*
