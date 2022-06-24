@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Address;
-use App\Models\CustomerInformations;
+use App\Models\CustomerInformation;
 use Buihuycuong\Vnfaker\VNFaker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +21,7 @@ class AddressSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table('addresses')->truncate();
 
-        $customers = CustomerInformations::get('id')->toArray();
+        $customers = CustomerInformation::get('id')->toArray();
 
         for ($i = 0; $i <= 10; $i++) {
             Address::create([

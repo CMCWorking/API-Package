@@ -34,6 +34,10 @@ class CustomerInformationV1Controller extends Controller
 
     public function store(CustomerInformationAPIRequest $request)
     {
+        if (!auth()->user()->can('create-customer-informations')) {
+            return $this->response->errorForbidden('You are not allowed to create customer informations.');
+        }
+
         $customer_information = $this->customer_information->create([
             'name' => $request->name,
             'email' => $request->email,
@@ -42,14 +46,20 @@ class CustomerInformationV1Controller extends Controller
             'receive_promotion' => 0,
         ]);
 
-        return $this->response->array([
-            'message' => 'Customer Information created successfully.',
-        ]);
+        return $this->response->item($customer_information, new CustomerInformationTransformer());
     }
 
     public function update(CustomerInformationAPIRequest $request, $id)
     {
         $customer_information = $this->customer_information->find($id);
+
+        if (!$customer_information) {
+            return $this->response->errorNotFound('Customer information not found');
+        }
+
+        if (!auth()->user()->can('update-customer-informations')) {
+            return $this->response->errorForbidden('You are not allowed to update customer informations.');
+        }
 
         $customer_information->update([
             'name' => $request->name,
@@ -67,6 +77,14 @@ class CustomerInformationV1Controller extends Controller
     public function destroy($id)
     {
         $customer_information = $this->customer_information->find($id);
+
+        if (!$customer_information) {
+            return $this->response->errorNotFound('Customer information not found');
+        }
+
+        if (!auth()->user()->can('delete-customer-informations')) {
+            return $this->response->errorForbidden('You are not allowed to delete customer informations.');
+        }
 
         $customer_information->delete();
 

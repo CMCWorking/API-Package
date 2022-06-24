@@ -37,6 +37,10 @@ class PaymentMethodV1Controller extends Controller
 
     public function store(PaymentMethodAPIRequest $request)
     {
+        if (!auth()->user()->can('create-payment-methods')) {
+            return $this->response->errorForbidden('You are not allowed to create payment methods.');
+        }
+
         $payment_method = $this->payment_method->create([
             'name' => $request->name,
             'description' => $request->description,
@@ -48,6 +52,14 @@ class PaymentMethodV1Controller extends Controller
     public function update(PaymentMethodAPIRequest $request, $id)
     {
         $payment_method = $this->payment_method->find($id);
+
+        if (!$payment_method) {
+            return $this->response->errorNotFound('Payment Method not found');
+        }
+
+        if (!auth()->user()->can('update-payment-methods')) {
+            return $this->response->errorForbidden('You are not allowed to update payment methods.');
+        }
 
         $payment_method->update([
             'name' => $request->name,
@@ -62,6 +74,14 @@ class PaymentMethodV1Controller extends Controller
     public function destroy($id)
     {
         $payment_method = $this->payment_method->find($id);
+
+        if (!$payment_method) {
+            return $this->response->errorNotFound('Payment Method not found');
+        }
+
+        if (!auth()->user()->can('delete-payment-methods')) {
+            return $this->response->errorForbidden('You are not allowed to delete payment methods.');
+        }
 
         $payment_method->delete();
 

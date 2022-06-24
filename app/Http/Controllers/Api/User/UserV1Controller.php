@@ -33,6 +33,10 @@ class UserV1Controller extends Controller
 
     public function store(UserAPIRequest $request)
     {
+        if (!auth()->user()->can('create-users')) {
+            return $this->response->errorForbidden('You are not allowed to create users.');
+        }
+
         $user = $this->user->create([
             'name' => $request->name,
             'email' => $request->email,
@@ -44,6 +48,10 @@ class UserV1Controller extends Controller
 
     public function update(UserAPIRequest $request, $id)
     {
+        if (!auth()->user()->can('update-users')) {
+            return $this->response->errorForbidden('You are not allowed to update users.');
+        }
+
         $user = $this->user->find($id);
         if (!$user) {
             return $this->response->errorNotFound('User not found');
@@ -62,6 +70,10 @@ class UserV1Controller extends Controller
 
     public function destroy($id)
     {
+        if (!auth()->user()->can('delete-users')) {
+            return $this->response->errorForbidden('You are not allowed to delete users.');
+        }
+
         $user = $this->user->find($id);
         if (!$user) {
             return $this->response->errorNotFound('User not found');

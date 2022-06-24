@@ -18,10 +18,20 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->truncate();
 
-        User::create([
+        $admin = User::create([
             'name' => 'Super Admin',
             'email' => 'admin@email.com',
             'password' => Hash::make('123123123'),
         ]);
+
+        $admin->assignRole('Admin');
+
+        $editor = User::create([
+            'name' => 'Editor',
+            'email' => 'editor@email.com',
+            'password' => Hash::make('123123123'),
+        ]);
+
+        $editor->assignRole('Editor');
     }
 }
