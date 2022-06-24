@@ -18,3 +18,6 @@ Please use Postman and follow [this URL](https://documenter.getpostman.com/view/
 - Email: `admin@email.com`
 - Password: `123123123`
 
+## Editor account
+- Email: `editor@email.com`
+- Password: `123123123`
