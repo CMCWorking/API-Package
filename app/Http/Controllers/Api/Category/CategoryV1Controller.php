@@ -60,6 +60,10 @@ class CategoryV1Controller extends Controller
      */
     public function store(CategoryAPIRequest $request)
     {
+        if (!auth()->user()->can('create-categories')) {
+            return $this->response->errorForbidden('You are not allowed to create categories.');
+        }
+
         $category = $this->category->create([
             'name' => $request->name,
             'slug' => $request->slug ? $request->slug : Str::slug($request->name),
@@ -87,6 +91,10 @@ class CategoryV1Controller extends Controller
 
         if (!$category) {
             return $this->response->errorNotFound('Category not found');
+        }
+
+        if (!auth()->user()->can('update-categories')) {
+            return $this->response->errorForbidden('You are not allowed to update categories.');
         }
 
         $category->update([
@@ -117,6 +125,10 @@ class CategoryV1Controller extends Controller
 
         if (!$category) {
             return $this->response->errorNotFound('Category not found');
+        }
+
+        if (!auth()->user()->can('delete-categories')) {
+            return $this->response->errorForbidden('You are not allowed to delete categories.');
         }
 
         $category->delete();
