@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentMethodAPIRequest;
 use App\Models\PaymentMethod;
 use Dingo\Api\Routing\Helpers;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class PaymentMethodV1Controller extends Controller
@@ -16,11 +17,12 @@ class PaymentMethodV1Controller extends Controller
     {
         $this->middleware('auth:sanctum');
         $this->payment_method = $payment_method;
+        $this->page = 10;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $payment_methods = $this->payment_method->paginate(10);
+        $payment_methods = $this->payment_method->filter($request->all())->paginate($request->paginate ?? $this->page);
 
         return $this->response->paginator($payment_methods, new PaymentMethodTransformer());
     }
