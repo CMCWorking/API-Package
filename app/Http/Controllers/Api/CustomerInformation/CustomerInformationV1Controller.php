@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerInformationAPIRequest;
 use App\Models\CustomerInformation;
 use Dingo\Api\Routing\Helpers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -17,11 +18,16 @@ class CustomerInformationV1Controller extends Controller
     {
         $this->middleware('auth:sanctum');
         $this->customer_information = $customer_information;
+        $this->page = 10;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $customer_informations = $this->customer_information->paginate(10);
+        $customer_informations = $this->customer_information->filter($request->all())->paginate($request->paginate ?? $this->page);
+
+        if ($customer_informations->count() < 1) {
+            throw new AccessDeniedHttpException('No data found');
+        }
 
         return $this->response->paginator($customer_informations, new CustomerInformationTransformer());
     }
@@ -90,5 +96,16 @@ class CustomerInformationV1Controller extends Controller
         $customer_information->delete();
 
         return $this->response->noContent();
+    }
+
+    public function search(Request $request)
+    {
+        $customer_information = $this->customer_information->with('addresses')->where(function ($query) use ($request) {
+            if ($request->has('phone')) {
+                $query->where('phone', $request->phone);
+            }
+        })->paginate($request->paginate ?? $this->page);
+
+        return $this->response->paginator($customer_information, new CustomerInformationTransformer());
     }
 }
