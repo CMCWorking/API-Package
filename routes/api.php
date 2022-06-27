@@ -32,6 +32,7 @@ $api->version('v1', ['middleware' => 'auth:sanctum'], function ($api) {
 
     // CUSTOMER INFORMATION
     $api->group(['namespace' => 'App\Http\Controllers\Api\CustomerInformation'], function ($api) {
+        $api->get('customer-informations/search', ['as' => 'search', 'uses' => 'CustomerInformationV1Controller@search']);
         $api->resource('customer-informations', 'CustomerInformationV1Controller');
     });
 
