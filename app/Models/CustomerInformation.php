@@ -31,7 +31,7 @@ class CustomerInformation extends Model
             $phone = explode(",", trim($request));
             $query->whereIn('phone', $phone);
         } else {
-            $query->where('phone', $request);
+            $query->where('phone', '%' . $request . '%');
         }
 
         return $query;
@@ -43,7 +43,7 @@ class CustomerInformation extends Model
             $phone = explode(",", trim($request));
             $query->whereIn('email', $phone);
         } else {
-            $query->where('email', $request);
+            $query->where('email', '%' . $request . '%');
         }
 
         return $query;
@@ -55,7 +55,7 @@ class CustomerInformation extends Model
             $phone = explode(",", $request);
             $query->whereIn('name', $phone);
         } else {
-            $query->where('name', $request);
+            $query->where('name', '%' . $request . '%');
         }
 
         return $query;
