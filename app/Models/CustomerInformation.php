@@ -27,36 +27,21 @@ class CustomerInformation extends Model
 
     public function filterPhone($query, $request)
     {
-        if (count(explode(",", trim($request))) >= 2) {
-            $phone = explode(",", trim($request));
-            $query->whereIn('phone', $phone);
-        } else {
-            $query->where('phone', '%' . $request . '%');
-        }
+        $query->whereIn('phone', explode(",", trim($request)));
 
         return $query;
     }
 
     public function filterEmail($query, $request)
     {
-        if (count(explode(",", trim($request))) >= 2) {
-            $phone = explode(",", trim($request));
-            $query->whereIn('email', $phone);
-        } else {
-            $query->where('email', '%' . $request . '%');
-        }
+        $query->whereIn('email', explode(",", trim($request)));
 
         return $query;
     }
 
     public function filterName($query, $request)
     {
-        if (count(explode(",", $request)) >= 2) {
-            $phone = explode(",", $request);
-            $query->whereIn('name', $phone);
-        } else {
-            $query->where('name', '%' . $request . '%');
-        }
+        $query->whereIn('name', explode(",", $request));
 
         return $query;
     }
