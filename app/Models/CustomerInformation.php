@@ -48,4 +48,16 @@ class CustomerInformation extends Model
 
         return $query;
     }
+
+    public function filterName($query, $request)
+    {
+        if (count(explode(",", $request)) >= 2) {
+            $phone = explode(",", $request);
+            $query->whereIn('name', $phone);
+        } else {
+            $query->where('name', $request);
+        }
+
+        return $query;
+    }
 }
