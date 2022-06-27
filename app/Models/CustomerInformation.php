@@ -12,8 +12,11 @@ class CustomerInformation extends Model
     use HasFactory, Filterable;
 
     protected $table = 'customer_informations';
+
+    /* This is a list of the columns that you can filter by. */
     protected $filterable = [
         'login_engine',
+        /* A way to map the filter name to the column name. */
         'promotion' => 'receive_promotion',
     ];
 
@@ -22,18 +25,27 @@ class CustomerInformation extends Model
         return $this->hasMany(Address::class, 'customer_id');
     }
 
-    public function filterName($query, $request)
+    public function filterPhone($query, $request)
     {
-        $query->where('name', 'like', '%' . $request . '%');
+        if (count(explode(",", trim($request))) >= 2) {
+            $phone = explode(",", trim($request));
+            $query->whereIn('phone', $phone);
+        } else {
+            $query->where('phone', $request);
+        }
+
+        return $query;
     }
 
     public function filterEmail($query, $request)
     {
-        $query->where('email', 'like', '%' . $request . '%');
-    }
+        if (count(explode(",", trim($request))) >= 2) {
+            $phone = explode(",", trim($request));
+            $query->whereIn('email', $phone);
+        } else {
+            $query->where('email', $request);
+        }
 
-    public function filterPhone($query, $request)
-    {
-        $query->where('phone', 'like', '%' . $request . '%');
+        return $query;
     }
 }
