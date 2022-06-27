@@ -21,4 +21,19 @@ class CustomerInformation extends Model
     {
         return $this->hasMany(Address::class, 'customer_id');
     }
+
+    public function filterName($query, $request)
+    {
+        $query->where('name', 'like', '%' . $request . '%');
+    }
+
+    public function filterEmail($query, $request)
+    {
+        $query->where('email', 'like', '%' . $request . '%');
+    }
+
+    public function filterPhone($query, $request)
+    {
+        $query->where('phone', 'like', '%' . $request . '%');
+    }
 }

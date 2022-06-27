@@ -100,11 +100,11 @@ class CustomerInformationV1Controller extends Controller
 
     public function search(Request $request)
     {
-        $customer_information = $this->customer_information->with('addresses')->where(function ($query) use ($request) {
-            if ($request->has('phone')) {
-                $query->where('phone', $request->phone);
-            }
-        })->paginate($request->paginate ?? $this->page);
+        $customer_information = $this->customer_information->filter($request->all())->paginate($request->paginate ?? $this->page);
+
+        if ($customer_information->count() < 1) {
+            return $this->response->errorNotFound('No data found');
+        }
 
         return $this->response->paginator($customer_information, new CustomerInformationTransformer());
     }
