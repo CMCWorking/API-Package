@@ -14,6 +14,7 @@ class CustomerInformationTransformer extends TransformerAbstract
             'email' => $customer_information['email'],
             'phone' => $customer_information['phone'],
             'receive_promotion' => $customer_information['receive_promotion'],
+            'login_engine' => $customer_information['login_engine'],
             'addresses' => $customer_information->addresses,
         ];
     }
