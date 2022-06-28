@@ -13,21 +13,26 @@ class StatusV1Controller extends Controller
 {
     use Helpers;
 
-    public function __construct()
+    public function __construct(Status $status)
     {
         $this->middleware('auth:sanctum');
+        $this->page = 10;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $statuses = Status::all();
+        $statuses = $this->status->filter($request->all())->paginate($request->paginate ?? $this->page);
 
-        return $this->response->collection($statuses, new StatusTransformer());
+        if (count($statuses) < 1) {
+            return $this->response->errorNotFound('Statuses not found');
+        }
+
+        return $this->response->paginator($statuses, new StatusTransformer());
     }
 
     public function show($id)
     {
-        $status = Status::find($id);
+        $status = $this->status->find($id);
 
         return $this->response->item($status, new StatusTransformer());
     }
@@ -38,7 +43,7 @@ class StatusV1Controller extends Controller
             return $this->response->AccessDeniedHttpException('You are not allowed to create statuses.');
         }
 
-        $status = Status::create([
+        $status = $this->status->create([
             'name' => $request->name,
             'description' => $request->description,
             'classname' => $request->classname,
@@ -50,7 +55,7 @@ class StatusV1Controller extends Controller
 
     public function update(Request $request, $id)
     {
-        $status = Status::find($id);
+        $status = $this->status->find($id);
 
         if (!$status) {
             return $this->response->errorNotFound('Status not found');
@@ -72,7 +77,7 @@ class StatusV1Controller extends Controller
 
     public function destroy($id)
     {
-        $status = Status::find($id);
+        $status = $this->status->find($id);
 
         if (!$status) {
             return $this->response->errorNotFound('Status not found');
@@ -85,5 +90,16 @@ class StatusV1Controller extends Controller
         $status->delete();
 
         return $this->response->noContent();
+    }
+
+    public function search(Request $request)
+    {
+        $status = $this->status->filter($request->all())->paginate($request->paginate ?? $this->page);
+
+        if (count($status) < 1) {
+            return $this->response->errorNotFound('Status not found');
+        }
+
+        return $this->response->paginator($status, new StatusTransformer());
     }
 }

@@ -22,6 +22,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\Auth', 'as' => 'au
 $api->version('v1', ['middleware' => 'auth:sanctum'], function ($api) {
     // USERS
     $api->group(['namespace' => 'App\Http\Controllers\Api\User'], function ($api) {
+        $api->get('users/search', ['as' => 'search', 'uses' => 'UserV1Controller@search']);
         $api->resource('users', 'UserV1Controller');
     });
 
@@ -32,6 +33,7 @@ $api->version('v1', ['middleware' => 'auth:sanctum'], function ($api) {
 
     // CUSTOMER INFORMATION
     $api->group(['namespace' => 'App\Http\Controllers\Api\CustomerInformation'], function ($api) {
+        $api->get('customer-informations/search', ['as' => 'search', 'uses' => 'CustomerInformationV1Controller@search']);
         $api->resource('customer-informations', 'CustomerInformationV1Controller');
     });
 

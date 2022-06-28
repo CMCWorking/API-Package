@@ -11,10 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
-/**
- * Category resource representation
- * @Resource("Categories", uri="/categories")
- */
 class CategoryV1Controller extends Controller
 {
     use Helpers;
@@ -23,6 +19,7 @@ class CategoryV1Controller extends Controller
     {
         $this->middleware('auth:sanctum');
         $this->category = $category;
+        $this->page = 10;
     }
 
     /**
@@ -30,9 +27,9 @@ class CategoryV1Controller extends Controller
      *
      * @return A paginated list of categories.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = $this->category->paginate(10);
+        $categories = $this->category->filter($request->all())->paginate($request->paginate ?? $this->page);
 
         return $this->response->paginator($categories, new CategoryTransformer());
     }
@@ -137,5 +134,16 @@ class CategoryV1Controller extends Controller
         return $this->response->array([
             'message' => 'Category deleted successfully',
         ]);
+    }
+
+    public function search(Request $request)
+    {
+        $categories = $this->category->filter($request->all())->paginate($request->paginate ?? $this->page);
+
+        if (count($categories) < 1) {
+            return $this->response->errorNotFound('Category not found');
+        }
+
+        return $this->response->paginator($categories, new CategoryTransformer());
     }
 }
