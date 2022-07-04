@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\CustomerInformation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerInformationAPIRequest;
 use App\Models\CustomerInformation;
+use App\Transformer\CustomerInformationTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
