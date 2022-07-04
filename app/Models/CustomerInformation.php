@@ -13,10 +13,8 @@ class CustomerInformation extends Model
 
     protected $table = 'customer_informations';
 
-    /* This is a list of the columns that you can filter by. */
     protected $filterable = [
         'login_engine',
-        /* A way to map the filter name to the column name. */
         'promotion' => 'receive_promotion',
     ];
 

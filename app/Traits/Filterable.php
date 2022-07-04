@@ -28,13 +28,11 @@ trait Filterable
 
             if (in_array($field, $this->filterable)) {
                 $query->where($this->table . '.' . $field, 'like', '%' . $value . '%');
-
                 continue;
             }
 
             if (key_exists($field, $this->filterable)) {
                 $query->where($this->table . '.' . $this->filterable[$field], 'like', '%' . $value . '%');
-
                 continue;
             }
         }

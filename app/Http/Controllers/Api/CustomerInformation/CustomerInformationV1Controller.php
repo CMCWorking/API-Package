@@ -51,7 +51,7 @@ class CustomerInformationV1Controller extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->password),
-            'receive_promotion' => 0,
+            'receive_promotion' => $request->receive_promotion ?? 0,
         ]);
 
         return $this->response->item($customer_information, new CustomerInformationTransformer());
