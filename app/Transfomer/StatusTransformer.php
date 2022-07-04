@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Api\Status;
+namespace App\Transformer;
 
 use App\Models\Status;
 use League\Fractal\TransformerAbstract;

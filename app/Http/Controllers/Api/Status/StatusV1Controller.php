@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\Status;
 
-use App\Http\Controllers\Api\Status\StatusTransformer;
-use App\Http\Controllers\Controller;
 use App\Models\Status;
-use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
+use Dingo\Api\Routing\Helpers;
+use App\Http\Controllers\Controller;
+use App\Transformer\StatusTransformer;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class StatusV1Controller extends Controller
