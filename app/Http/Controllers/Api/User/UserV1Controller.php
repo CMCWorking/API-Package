@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Http\Controllers\Api\User\UserTransformer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserAPIRequest;
 use App\Models\User;
+use App\Transformer\UserTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
