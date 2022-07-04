@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Api\PaymentMethod;
+namespace App\Transformer;
 
 use App\Models\PaymentMethod;
 use League\Fractal\TransformerAbstract;

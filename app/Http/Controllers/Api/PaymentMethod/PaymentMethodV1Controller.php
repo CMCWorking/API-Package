@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\PaymentMethod;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentMethodAPIRequest;
 use App\Models\PaymentMethod;
+use App\Transformer\PaymentMethodTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
