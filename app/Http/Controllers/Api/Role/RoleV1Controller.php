@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Role;
 
 use App\Http\Controllers\Controller;
+use App\Transformer\RoleTransformer;
 use Dingo\Api\Routing\Helpers;
 use Spatie\Permission\Models\Role;
 
