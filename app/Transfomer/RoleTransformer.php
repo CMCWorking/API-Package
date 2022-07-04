@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Api\Role;
+namespace App\Transformer;
 
 use League\Fractal\TransformerAbstract;
 use Spatie\Permission\Models\Role;

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\Category;
 
-use App\Http\Controllers\Api\Category\CategoryTransformer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryAPIRequest;
 use App\Models\Category;
+use App\Transformer\CategoryTransformer;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
