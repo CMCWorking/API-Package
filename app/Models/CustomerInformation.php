@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\Address;
 use App\Traits\Filterable;
+use App\Traits\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CustomerInformation extends Model
 {
     protected $guarded = [];
-    use HasFactory, Filterable;
+    use HasFactory, Filterable, Sortable;
 
     protected $table = 'customer_informations';
 
