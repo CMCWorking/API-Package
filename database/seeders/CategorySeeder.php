@@ -6,10 +6,15 @@ use App\Models\Category;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
+    public function __construct(Category $category)
+    {
+        $this->category = $category;
+        $this->faker = Factory::create();
+    }
+
     /**
      * Run the database seeds.
      *
@@ -19,15 +24,13 @@ class CategorySeeder extends Seeder
     {
         DB::table('categories')->truncate();
 
-        $faker = Factory::create();
-
         for ($i = 1; $i <= 20; $i++) {
-            Category::create([
-                'name' => 'Danh mục ' . $i,
-                'description' => 'Mô tả của danh mục ' . $i,
-                'slug' => Str::slug('Danh mục ' . $i),
-                'image' => $faker->imageUrl(640, 640, 'products', true),
-                'keywords' => 'keyword ' . $i,
+            $this->category->create([
+                'name' => $this->faker->sentence(3),
+                'description' => $this->faker->paragraph(2),
+                'slug' => $this->faker->slug(3, false),
+                'image' => $this->faker->imageUrl(640, 640, 'products', true),
+                'keywords' => $this->faker->words(5, true),
                 'parent_id' => null,
             ]);
         }

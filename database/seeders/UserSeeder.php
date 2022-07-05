@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+
     /**
      * Run the database seeds.
      *
@@ -18,7 +23,7 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->truncate();
 
-        $admin = User::create([
+        $admin = $this->user->create([
             'name' => 'Super Admin',
             'email' => 'admin@email.com',
             'password' => Hash::make('123123123'),
@@ -26,7 +31,7 @@ class UserSeeder extends Seeder
 
         $admin->assignRole('Admin');
 
-        $editor = User::create([
+        $editor = $this->user->create([
             'name' => 'Editor',
             'email' => 'editor@email.com',
             'password' => Hash::make('123123123'),

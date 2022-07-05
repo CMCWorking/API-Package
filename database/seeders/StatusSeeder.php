@@ -3,11 +3,18 @@
 namespace Database\Seeders;
 
 use App\Models\Status;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class StatusSeeder extends Seeder
 {
+    public function __construct(Status $status)
+    {
+        $this->status = $status;
+        $this->faker = Factory::create();
+    }
+
     /**
      * Run the database seeds.
      *
@@ -21,9 +28,9 @@ class StatusSeeder extends Seeder
         $type = ['order_status', 'payment_status', 'shipping_status'];
 
         for ($i = 1; $i <= 5; $i++) {
-            Status::create([
-                'name' => 'Trạng thái ' . $i,
-                'description' => 'Mô tả của trạng thái ' . $i,
+            $this->status->create([
+                'name' => $this->faker->words(3, true),
+                'description' => $this->faker->words(3, true),
                 'classname' => $className[array_rand($className)],
                 'type' => $type[array_rand($type)],
             ]);
