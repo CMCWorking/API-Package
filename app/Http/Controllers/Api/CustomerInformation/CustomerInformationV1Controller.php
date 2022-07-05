@@ -101,12 +101,15 @@ class CustomerInformationV1Controller extends Controller
 
     public function search(Request $request)
     {
-        $customer_information = $this->customer_information->filter($request->all())->paginate($request->paginate ?? $this->page);
+        isset($request->sort) ? $sort = ltrim($request->sort, "-") : $sort = 'created_at';
+        isset($request->sort) ? $order = $request->sort[0] == '-' ? 'desc' : 'asc' : $order = 'desc';
 
-        if ($customer_information->count() < 1) {
+        $customer_informations = $this->customer_information->filter($request->all())->Sortable($request->sort)->paginate($request->paginate ?? $this->page);
+
+        if ($customer_informations->count() < 1) {
             return $this->response->errorNotFound('No data found');
         }
 
-        return $this->response->paginator($customer_information, new CustomerInformationTransformer());
+        return $this->response->paginator($customer_informations, new CustomerInformationTransformer());
     }
 }
