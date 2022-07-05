@@ -6,6 +6,10 @@ trait Sortable
 {
     public function scopeSortable($query, $request)
     {
+        if (empty($request)) {
+            return $query;
+        }
+
         $sort = ltrim($request, '-');
         $order = $request[0] === '-' ? 'desc' : 'asc';
 
