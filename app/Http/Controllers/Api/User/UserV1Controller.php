@@ -22,9 +22,9 @@ class UserV1Controller extends Controller
 
     public function index()
     {
-        $user = $this->user->paginate(10);
+        $users = $this->user->paginate(10);
 
-        return $this->response->paginator($user, new UserTransformer());
+        return $this->response->paginator($users, new UserTransformer());
     }
 
     public function show($id)
@@ -91,12 +91,12 @@ class UserV1Controller extends Controller
 
     public function search(Request $request)
     {
-        $user = $this->user->filter($request->all())->paginate($request->paginate ?? $this->page);
+        $users = $this->user->filter($request->all())->Sortable($request->sort)->paginate($request->paginate ?? $this->page);
 
-        if (count($user) < 1) {
+        if (count($users) < 1) {
             return $this->response->errorNotFound('User not found');
         }
 
-        return $this->response->paginator($user, new UserTransformer());
+        return $this->response->paginator($users, new UserTransformer());
     }
 }
