@@ -3,14 +3,19 @@
 namespace Database\Seeders;
 
 use App\Models\CustomerInformation;
-use Buihuycuong\Vnfaker\VNFaker;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class CustomerInformationSeeder extends Seeder
 {
+    public function __construct(CustomerInformation $customer_information)
+    {
+        $this->customer_information = $customer_information;
+        $this->faker = Factory::create();
+    }
+
     /**
      * Run the database seeds.
      *
@@ -23,14 +28,14 @@ class CustomerInformationSeeder extends Seeder
         $engine = ['facebook', 'google', 'email'];
 
         for ($i = 0; $i <= 20; $i++) {
-            CustomerInformation::create([
-                'name' => VNFaker::fullname(),
-                'email' => VNFaker::email(['gmail.test', 'cmcglobal.test']),
-                'phone' => VNFaker::mobilephone(),
-                'password' => Hash::make(Str::random(10)),
-                'receive_promotion' => VNFaker::boolean(),
+            $this->customer_information->create([
+                'name' => $this->faker->name,
+                'email' => $this->faker->unique()->safeEmail(),
+                'phone' => '0' . $this->faker->randomNumber(5, true) . '' . $this->faker->randomNumber(5, true),
+                'password' => Hash::make($this->faker->password()),
+                'receive_promotion' => $this->faker->numberBetween(0, 1),
                 'login_engine' => $engine[array_rand($engine)],
-                'account_key' => VNFaker::generateOrderNo(10),
+                'account_key' => $this->faker->sha1(),
             ]);
         }
     }

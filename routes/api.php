@@ -28,6 +28,7 @@ $api->version('v1', ['middleware' => 'auth:sanctum'], function ($api) {
 
     // CATEGORIES
     $api->group(['namespace' => 'App\Http\Controllers\Api\Category'], function ($api) {
+        $api->get('categories/search', ['as' => 'search', 'uses' => 'CategoryV1Controller@search']);
         $api->resource('categories', 'CategoryV1Controller');
     });
 
