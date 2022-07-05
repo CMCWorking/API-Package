@@ -16,6 +16,7 @@ class CustomerInformationTransformer extends TransformerAbstract
             'receive_promotion' => $customer_information['receive_promotion'],
             'login_engine' => $customer_information['login_engine'],
             'addresses' => $customer_information->addresses,
+            'created_at' => date('Y-m-d', strtotime($customer_information['created_at'])),
         ];
     }
 }

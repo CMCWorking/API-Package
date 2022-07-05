@@ -45,4 +45,12 @@ class CustomerInformation extends Model
 
         return $query;
     }
+
+    public function filterRange($query, $request)
+    {
+        $dates = explode("-", $request);
+        $query->whereBetween('created_at', [$dates[0], $dates[1]]);
+
+        return $query;
+    }
 }

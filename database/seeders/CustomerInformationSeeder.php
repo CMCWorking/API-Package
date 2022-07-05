@@ -36,6 +36,7 @@ class CustomerInformationSeeder extends Seeder
                 'receive_promotion' => $this->faker->numberBetween(0, 1),
                 'login_engine' => $engine[array_rand($engine)],
                 'account_key' => $this->faker->sha1(),
+                'created_at' => $this->faker->dateTimeBetween(now()->subDays($this->faker->numberBetween(1, 100)), 'now'),
             ]);
         }
     }
