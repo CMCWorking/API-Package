@@ -21,7 +21,12 @@ class CustomerInformation extends Model
 
     protected $filters = [
         'sort',
+        'greater',
+        'greater_or_equal',
+        'less',
+        'less_or_equal',
         'between',
+        'not_between',
         'name',
         'email',
         'phone',
