@@ -12,7 +12,7 @@ class Category extends Model
 
     protected $guarded = [];
 
-    protected $filter = [
+    protected $filters = [
         'sort',
         'greater',
         'greater_or_equal',
