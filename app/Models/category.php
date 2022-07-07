@@ -2,18 +2,24 @@
 
 namespace App\Models;
 
-use App\Traits\Filterable;
-use App\Traits\Sortable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Mehradsadeghi\FilterQueryString\FilterQueryString;
 
 class Category extends Model
 {
-    use HasFactory, Filterable, Sortable;
+    use HasFactory, FilterQueryString;
 
     protected $guarded = [];
 
-    protected $filterable = [
+    protected $filter = [
+        'sort',
+        'greater',
+        'greater_or_equal',
+        'less',
+        'less_or_equal',
+        'between',
+        'not_between',
         'name',
         'slug',
         'keywords',

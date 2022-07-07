@@ -138,7 +138,7 @@ class CategoryV1Controller extends Controller
 
     public function search(Request $request)
     {
-        $categories = $this->category->filter($request->all())->Sortable($request->sort)->paginate($request->paginate ?? $this->page);
+        $categories = $this->category->filter()->paginate($request->paginate ?? $this->page);
 
         if (count($categories) < 1) {
             return $this->response->errorNotFound('Category not found');
