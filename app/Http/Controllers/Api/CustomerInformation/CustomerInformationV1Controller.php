@@ -103,12 +103,10 @@ class CustomerInformationV1Controller extends Controller
     {
         $customer_informations = $this->customer_information->filter()->paginate($request->paginate ?? $this->page);
 
+        if ($customer_informations->count() < 1) {
+            return $this->response->errorNotFound('No data found');
+        }
+
         return $this->response->paginator($customer_informations, new CustomerInformationTransformer());
-
-        // if ($customer_informations->count() < 1) {
-        //     return $this->response->errorNotFound('No data found');
-        // }
-
-        // return $this->response->paginator($customer_informations, new CustomerInformationTransformer());
     }
 }
